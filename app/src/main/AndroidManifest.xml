@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.purpleboard"> <!-- Make sure this matches your actual package name -->
+
+    <!-- Permissions: Request internet access for network operations -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Purpleboard"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <!-- IMPORTANT: android:usesCleartextTraffic="true" allows HTTP for local server development. -->
+        <!-- For production, use HTTPS and set this to false or remove. -->
+
+        <!-- Launcher Activity: This is the first screen of the app -->
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Purpleboard">
+            <!-- Using NoActionBar theme for login -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Registration Screen -->
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:exported="false"
+            android:label="@string/register_title"
+            android:parentActivityName=".activities.LoginActivity"
+            android:theme="@style/Theme.Purpleboard">
+            <!-- Using NoActionBar theme for registration -->
+        </activity>
+
+        <!-- Home Screen -->
+        <activity
+            android:name=".activities.HomeActivity"
+            android:exported="false"
+            android:label="@string/home_title"
+            android:theme="@style/Theme.Purpleboard.WithActionBar" />
+
+        <!-- Discussions List Screen -->
+        <activity
+            android:name=".activities.DiscussionsActivity"
+            android:exported="false"
+            android:label="@string/discussions_title"
+            android:parentActivityName=".activities.HomeActivity"
+            android:theme="@style/Theme.Purpleboard.WithActionBar" />
+
+        <!-- New Discussion Screen -->
+        <activity
+            android:name=".activities.NewDiscussionActivity"
+            android:exported="false"
+            android:label="@string/new_discussion_title"
+            android:parentActivityName=".activities.DiscussionsActivity"
+            android:theme="@style/Theme.Purpleboard.WithActionBar" />
+
+        <!-- Discussion Detail Screen -->
+        <activity
+            android:name=".activities.DiscussionDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.DiscussionsActivity"
+            android:theme="@style/Theme.Purpleboard.WithActionBar">
+            <!-- Label for DiscussionDetailActivity will be set dynamically in code -->
+        </activity>
+
+        <!-- Assignments List Screen -->
+        <activity
+            android:name=".activities.AssignmentsActivity"
+            android:exported="false"
+            android:label="@string/assignments_title"
+            android:parentActivityName=".activities.HomeActivity"
+            android:theme="@style/Theme.Purpleboard.WithActionBar" />
+
+        <!-- Assignment Detail Screen -->
+        <activity
+            android:name=".activities.AssignmentDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".activities.AssignmentsActivity"
+            android:theme="@style/Theme.Purpleboard.WithActionBar">
+            <!-- Label for AssignmentDetailActivity will be set dynamically in code -->
+        </activity>
+
+        <!-- Leaderboard Screen -->
+        <activity
+            android:name=".activities.LeaderboardActivity"
+            android:exported="false"
+            android:label="@string/leaderboards_title"
+            android:parentActivityName=".activities.HomeActivity"
+            android:theme="@style/Theme.Purpleboard.WithActionBar" />
+
+        <!-- Profile Screen -->
+
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:exported="false"
+            android:label="@string/profile_title"
+            android:parentActivityName=".activities.HomeActivity"
+             android:theme="@style/Theme.Purpleboard" /> <!-- Use the NoActionBar theme -->
+
+
+        <!-- Point Shop Screen -->
+        <activity
+            android:name=".activities.PointShopActivity"
+            android:exported="false"
+            android:label="@string/point_shop_title"
+            android:parentActivityName=".activities.ProfileActivity"
+            android:theme="@style/Theme.Purpleboard.WithActionBar" />
+
+    </application>
+
+</manifest>

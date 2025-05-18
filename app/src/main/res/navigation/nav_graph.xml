@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginActivityNavDestination">
+
+    <!-- Authentication Flow -->
+    <activity
+        android:id="@+id/loginActivityNavDestination"
+        android:name="com.example.purpleboard.activities.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" >
+        <action
+            android:id="@+id/action_loginActivity_to_registerActivity"
+            app:destination="@id/registerActivityNavDestination" />
+        <action
+            android:id="@+id/action_loginActivity_to_homeActivity"
+            app:destination="@id/homeActivityNavDestination"
+            app:popUpTo="@id/loginActivityNavDestination"
+            app:popUpToInclusive="true" />
+    </activity>
+
+    <activity
+        android:id="@+id/registerActivityNavDestination"
+        android:name="com.example.purpleboard.activities.RegisterActivity"
+        android:label="activity_register"
+        tools:layout="@layout/activity_register" >
+        <action
+            android:id="@+id/action_registerActivity_to_loginActivity"
+            app:destination="@id/loginActivityNavDestination"
+            app:popUpTo="@id/loginActivityNavDestination"
+            app:popUpToInclusive="true"/>
+    </activity>
+
+    <!-- Main App Flow -->
+    <activity
+        android:id="@+id/homeActivityNavDestination"
+        android:name="com.example.purpleboard.activities.HomeActivity"
+        android:label="@string/home_title"
+        tools:layout="@layout/activity_home" >
+        <action
+            android:id="@+id/action_homeActivity_to_discussionsActivity"
+            app:destination="@id/discussionsActivityNavDestination" />
+        <action
+            android:id="@+id/action_homeActivity_to_assignmentsActivity"
+            app:destination="@id/assignmentsActivityNavDestination" />
+        <action
+            android:id="@+id/action_homeActivity_to_leaderboardActivity"
+            app:destination="@id/leaderboardActivityNavDestination" />
+        <action
+            android:id="@+id/action_homeActivity_to_profileActivity"
+            app:destination="@id/profileActivityNavDestination" />
+    </activity>
+
+    <activity
+        android:id="@+id/discussionsActivityNavDestination"
+        android:name="com.example.purpleboard.activities.DiscussionsActivity"
+        android:label="@string/discussions_title"
+        tools:layout="@layout/activity_discussions" >
+        <action
+            android:id="@+id/action_discussionsActivity_to_newDiscussionActivity"
+            app:destination="@id/newDiscussionActivityNavDestination" />
+        <action
+            android:id="@+id/action_discussionsActivity_to_discussionDetailActivity"
+            app:destination="@id/discussionDetailActivityNavDestination" />
+    </activity>
+
+    <activity
+        android:id="@+id/newDiscussionActivityNavDestination"
+        android:name="com.example.purpleboard.activities.NewDiscussionActivity"
+        android:label="@string/new_discussion_title"
+        tools:layout="@layout/activity_new_discussion" />
+
+    <activity
+        android:id="@+id/discussionDetailActivityNavDestination"
+        android:name="com.example.purpleboard.activities.DiscussionDetailActivity"
+        android:label="activity_discussion_detail"
+        tools:layout="@layout/activity_discussion_detail">
+        <argument
+            android:name="discussionId"
+            app:argType="integer" />
+        <argument
+            android:name="discussionTopic"
+            app:argType="string"
+            app:nullable="true" />
+    </activity>
+
+    <activity
+        android:id="@+id/assignmentsActivityNavDestination"
+        android:name="com.example.purpleboard.activities.AssignmentsActivity"
+        android:label="@string/assignments_title"
+        tools:layout="@layout/activity_assignments" >
+        <action
+            android:id="@+id/action_assignmentsActivity_to_assignmentDetailActivity"
+            app:destination="@id/assignmentDetailActivityNavDestination" />
+    </activity>
+
+    <activity
+        android:id="@+id/assignmentDetailActivityNavDestination"
+        android:name="com.example.purpleboard.activities.AssignmentDetailActivity"
+        android:label="activity_assignment_detail"
+        tools:layout="@layout/activity_assignment_detail">
+        <argument
+            android:name="assignmentId"
+            app:argType="integer" />
+        <argument
+            android:name="assignmentTopic"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="isCompleted"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </activity>
+
+    <activity
+        android:id="@+id/leaderboardActivityNavDestination"
+        android:name="com.example.purpleboard.activities.LeaderboardActivity"
+        android:label="@string/leaderboards_title"
+        tools:layout="@layout/activity_leaderboard" />
+
+    <activity
+        android:id="@+id/profileActivityNavDestination"
+        android:name="com.example.purpleboard.activities.ProfileActivity"
+        android:label="@string/profile_title"
+        tools:layout="@layout/activity_profile" >
+        <action
+            android:id="@+id/action_profileActivity_to_pointShopActivity"
+            app:destination="@id/pointShopActivityNavDestination" />
+    </activity>
+
+    <activity
+        android:id="@+id/pointShopActivityNavDestination"
+        android:name="com.example.purpleboard.activities.PointShopActivity"
+        android:label="@string/point_shop_title"
+        tools:layout="@layout/activity_point_shop" />
+
+    <!-- DialogFragment Destination -->
+    <dialog
+        android:id="@+id/avatarPickerDialogFragmentNavDestination"
+        android:name="com.example.purpleboard.fragments.AvatarPickerDialogFragment"
+        android:label="dialog_avatar_picker"
+        tools:layout="@layout/dialog_avatar_picker" />
+
+</navigation>

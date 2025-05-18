@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/imageViewBadge"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        tools:srcCompat="@android:drawable/star_on" /> <!-- Placeholder, replace with actual badge icons -->
+
+    <TextView
+        android:id="@+id/textViewBadgeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="10sp"
+        tools:ignore="SmallSp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="Badge Name" />
+</LinearLayout>

@@ -1,0 +1,66 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen> <!-- For FloatingActionButtons -->
+
+    <!-- General spacing -->
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_medium">8dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_xlarge">24dp</dimen>
+    <dimen name="spacing_xxlarge">32dp</dimen>
+
+    <!-- Text Sizes (Material 3 Type Scale has more specific names, but these are general) -->
+    <dimen name="text_size_label_small">11sp</dimen>
+    <dimen name="text_size_label_medium">12sp</dimen>
+    <dimen name="text_size_label_large">14sp</dimen>
+    <dimen name="text_size_body_small">12sp</dimen>
+    <dimen name="text_size_body_medium">14sp</dimen>
+    <dimen name="text_size_body_large">16sp</dimen>
+    <dimen name="text_size_title_small">14sp</dimen>
+    <dimen name="text_size_title_medium">16sp</dimen>
+    <dimen name="text_size_title_large">22sp</dimen>
+    <dimen name="text_size_headline_small">24sp</dimen>
+    <dimen name="text_size_headline_medium">28sp</dimen>
+    <dimen name="text_size_headline_large">32sp</dimen>
+    <dimen name="text_size_display_small">36sp</dimen>
+    <dimen name="text_size_display_medium">45sp</dimen>
+    <dimen name="text_size_display_large">57sp</dimen>
+
+    <!-- Button sizes -->
+    <dimen name="button_height_standard">48dp</dimen>
+    <dimen name="button_corner_radius">8dp</dimen>
+    <dimen name="button_padding_vertical">12dp</dimen>
+    <dimen name="button_padding_horizontal">24dp</dimen> <!-- For buttons with icons -->
+    <dimen name="button_icon_padding">8dp</dimen>
+
+    <!-- Avatar sizes -->
+    <dimen name="avatar_size_small">40dp</dimen>  <!-- Used in discussion/reply items -->
+    <dimen name="avatar_size_medium">60dp</dimen> <!-- Used in leaderboard regular entry -->
+    <dimen name="avatar_size_large">80dp</dimen>  <!-- Used in leaderboard top entry -->
+    <dimen name="avatar_size_profile">100dp</dimen> <!-- Used on Profile screen header -->
+    <dimen name="avatar_picker_item_size">64dp</dimen> <!-- For items in avatar picker dialog -->
+
+
+    <!-- Leaderboard Specific -->
+    <dimen name="leaderboard_item_height_regular">72dp</dimen> <!-- Approximate height for regular entry with padding -->
+    <!-- For top item to be ~3x, if regular is ~72dp, top should be ~216dp. -->
+    <!-- Padding needs to make up the difference around content. -->
+    <!-- If content height for top is ~90dp (avatar_large + text), then padding needed is (216-90)/2 = 63dp top/bottom -->
+    <dimen name="leaderboard_top_item_extra_margin_vertical">60dp</dimen> <!-- Adjusted to provide significant extra space -->
+    <dimen name="leaderboard_crown_size">24dp</dimen>
+
+    <!-- CardView specific -->
+    <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_padding">16dp</dimen> <!-- General padding inside cards -->
+
+    <!-- Input Fields -->
+    <dimen name="text_input_min_height">48dp</dimen>
+
+    <!-- Other specific dimensions -->
+    <dimen name="profile_badge_size">48dp</dimen>
+    <dimen name="profile_badge_name_text_size">10sp</dimen>
+
+</resources>

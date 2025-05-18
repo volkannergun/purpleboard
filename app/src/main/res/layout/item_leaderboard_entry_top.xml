@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/spacing_large"
+    android:paddingEnd="@dimen/spacing_large"
+    android:paddingTop="@dimen/leaderboard_top_item_extra_margin_vertical"
+    android:paddingBottom="@dimen/leaderboard_top_item_extra_margin_vertical"
+    android:gravity="center_vertical"
+    android:background="?attr/colorPrimaryContainer"
+    android:elevation="4dp"> <!-- Optional elevation -->
+
+    <ImageView
+        android:id="@+id/imageViewCrown"
+        android:layout_width="@dimen/leaderboard_crown_size"
+        android:layout_height="@dimen/leaderboard_crown_size"
+        android:src="@drawable/ic_crown"
+        app:tint="?attr/colorOnPrimaryContainer"
+        android:layout_marginEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/textViewRankTop"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnPrimaryContainer"
+        tools:text="1." />
+
+    <ImageView
+        android:id="@+id/imageViewLeaderboardAvatarTop"
+        android:layout_width="@dimen/avatar_size_large"
+        android:layout_height="@dimen/avatar_size_large"
+        android:layout_marginStart="@dimen/spacing_medium"
+        tools:srcCompat="@drawable/ic_profile_placeholder" />
+
+    <TextView
+        android:id="@+id/textViewLeaderboardNameTop"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/spacing_medium"
+        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnPrimaryContainer"
+        tools:text="Top Student Name" />
+
+    <TextView
+        android:id="@+id/textViewLeaderboardPointsTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_medium"
+        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnPrimaryContainer"
+        tools:text="1500" />
+
+</LinearLayout>

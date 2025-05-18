@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Purpleboard</string>
+
+    <!-- Activity Titles from Manifest -->
+    <string name="login_title">Login</string>
+    <string name="register_title">Registration</string>
+    <string name="home_title">Home</string>
+    <string name="discussions_title">Discussions</string>
+    <string name="new_discussion_title">New Discussion</string>
+    <!-- DiscussionDetailActivity title is set dynamically -->
+    <string name="assignments_title">Assignments</string>
+    <!-- AssignmentDetailActivity title is set dynamically -->
+    <string name="leaderboards_title">Leaderboards</string>
+    <string name="profile_title">Profile</string>
+    <string name="point_shop_title">Point Shop</string>
+
+    <!-- Other UI Strings (ensure these are also present if used elsewhere) -->
+    <string name="name_hint">Name</string>
+    <string name="surname_hint">Surname</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="login_button">Login</string>
+    <string name="go_to_register_button">Don\'t have an account? Register</string>
+    <string name="register_button">Register</string>
+    <string name="password_rules">Password must be 6-12 characters, including lowercase, uppercase, and a number.</string>
+    <string name="password_mismatch">Passwords do not match.</string>
+
+    <string name="discussions_page_button">Discussions</string>
+    <string name="assignments_page_button">Assignments</string>
+    <string name="leaderboards_page_button">Leaderboards</string>
+    <string name="profile_page_button">My Profile</string>
+
+    <string name="create_discussion_button">Create Discussion</string>
+    <string name="topic_hint">Topic</string>
+    <string name="description_hint">Description</string>
+    <string name="create_button">Create</string>
+    <string name="enter_reply_hint">Enter your reply...</string>
+    <string name="send_reply_button">Send</string>
+    <string name="complete_assignment_button">Send Reply &quot;` (if used inside an attribute value that is also quoted with double quotes)
+*   `'` becomes `' Complete</string>
+
+    <string name="total_points_leaderboard">Total Points</string>
+    <string name="current_points_leaderboard">Current Points</string>
+
+    <string name="my_points_label">My Points: %d</string>
+    <string name="point_shop_button">Point Shop</string>
+    <string name="chatgpt_pro_code_button_text_default">30 Days ChatGPT Pro Code</string>
+    <string name="chatgpt_pro_code_button_points_default">5 points</string>
+    <string name="chatgpt_pro_code_revealed">N074-R34L-C0D3</string>
+
+    <string name="avatar_picker_title">Choose Avatar</string>
+    <string name="err_failed_to_load_data">Failed to load data. Please try again.</string>
+    <string name="err_network_error">Network error. Please check your connection.</string>
+    <string name="err_unknown">An unknown error occurred.</string>
+    <string name="err_field_required">%s is required.</string>
+    <string name="err_email_invalid">Invalid email format.</string>
+    <string name="loading">Loading...</string>
+    <string name="logout_button">Logout</string>
+</resources>
