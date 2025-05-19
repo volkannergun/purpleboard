@@ -27,6 +27,9 @@ data class User(
     @SerializedName("avatar_name")
     val avatarName: String, // e.g., "avatar1", "avatar5"
 
+    @SerializedName("user_role") // <<< ADD THIS LINE
+    val userRole: String,       // <<< ADD THIS LINE ("student" or "admin")
+
     @SerializedName("created_at")
     val createdAt: String? = null // Optional, depends if your API sends it
 ) {

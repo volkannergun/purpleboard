@@ -37,9 +37,7 @@
     <string name="create_button">Create</string>
     <string name="enter_reply_hint">Enter your reply...</string>
     <string name="send_reply_button">Send</string>
-    <string name="complete_assignment_button">Send Reply &quot;` (if used inside an attribute value that is also quoted with double quotes)
-*   `'` becomes `' Complete</string>
-
+    <string name="complete_assignment_button">Submit Assignment</string>
     <string name="total_points_leaderboard">Total Points</string>
     <string name="current_points_leaderboard">Current Points</string>
 
@@ -57,4 +55,5 @@
     <string name="err_email_invalid">Invalid email format.</string>
     <string name="loading">Loading...</string>
     <string name="logout_button">Logout</string>
+    <string name="purchase">Purchase</string>
 </resources>

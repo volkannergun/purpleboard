@@ -9,6 +9,10 @@ android {
     namespace = "com.example.purpleboard" // IMPORTANT: Match your package name
     compileSdk = 34
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.example.purpleboard" // IMPORTANT: Match your package name
         minSdk = 24

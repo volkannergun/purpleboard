@@ -117,6 +117,15 @@
             android:parentActivityName=".activities.ProfileActivity"
             android:theme="@style/Theme.Purpleboard.WithActionBar" />
 
+        <activity
+            android:name=".activities.NewAssignmentActivity"
+            android:exported="false"
+            android:label="New Assignment"
+            android:parentActivityName=".activities.AssignmentsActivity"
+            android:theme="@style/Theme.Purpleboard.WithActionBar" />
+
+
+
     </application>
 
 </manifest>

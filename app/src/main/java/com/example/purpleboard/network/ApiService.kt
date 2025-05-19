@@ -3,6 +3,7 @@ package com.example.purpleboard.network // Adjust package name
 import com.example.purpleboard.models.*
 import retrofit2.Response // Important: Use retrofit2.Response for full HTTP response access
 import retrofit2.http.*
+import com.example.purpleboard.models.NewAssignmentRequest
 
 interface ApiService {
 
@@ -17,11 +18,12 @@ interface ApiService {
     @GET("students/{student_id}")
     suspend fun getStudentProfile(@Path("student_id") studentId: Int): Response<User> // Assuming it returns a User object
 
-    @PUT("students/{student_id}/avatar")
+    @PUT("students/{student_id_in_path}/avatar") // Clarified path parameter name
     suspend fun updateUserAvatar(
-        @Path("student_id") studentId: Int,
-        @Body avatarUpdateRequest: Map<String, String> // e.g., mapOf("avatar_name" to "avatar3")
-    ): Response<SimpleApiResponse> // Or a response with updated user data
+        @Path("student_id_in_path") studentIdInPath: Int,      // This is the ID from the URL
+        @Header("X-Student-ID") authenticatedStudentId: Int, // <<< ADD THIS HEADER PARAMETER
+        @Body avatarUpdateRequest: Map<String, String>
+    ): Response<SimpleApiResponse>
 
     // --- Discussions ---
     @GET("discussions")
@@ -57,6 +59,12 @@ interface ApiService {
     @GET("assignments/{assignment_id}")
     suspend fun getAssignmentDetails(@Path("assignment_id") assignmentId: Int): Response<Assignment>
 
+    @POST("assignments") // This matches the Flask route
+    suspend fun createAssignment(
+        @Header("X-Student-ID") adminId: Int, // Assuming admin's ID is sent for auth check
+        @Body newAssignmentRequest: NewAssignmentRequest
+    ): Response<Assignment> // Assuming server returns the created Assignment object
+
     @POST("assignments/{assignment_id}/complete")
     suspend fun completeAssignment(
         @Path("assignment_id") assignmentId: Int,
@@ -64,9 +72,11 @@ interface ApiService {
         @Body submitAssignmentRequest: SubmitAssignmentRequest
     ): Response<SimpleApiResponse> // Or response with updated points
 
-    @GET("students/{student_id}/assignments/completed")
-    suspend fun getCompletedAssignmentIds(@Path("student_id") studentId: Int): Response<List<Int>> // Returns list of assignment_ids
-
+    @GET("students/{student_id_in_path}/assignments/completed")
+    suspend fun getCompletedAssignmentIds(
+        @Path("student_id_in_path") studentIdInPath: Int,
+        @Header("X-Student-ID") authenticatedStudentId: Int // <<< ADD THIS HEADER PARAMETER
+    ): Response<List<Int>> // Returns list of assignment_ids
 
     // --- Leaderboard ---
     @GET("leaderboard/total")
@@ -86,6 +96,10 @@ interface ApiService {
         @Header("X-Student-ID") studentId: Int // Example
     ): Response<SimpleApiResponse> // Or response with updated points and item status
 
-    @GET("students/{student_id}/purchases") // To check if student has bought an item
-    suspend fun getStudentPurchases(@Path("student_id") studentId: Int): Response<List<Int>> // Returns list of item_ids
+    // In ApiService.kt
+    @GET("students/{student_id_in_path}/purchases")
+    suspend fun getStudentPurchases(
+        @Path("student_id_in_path") studentIdInPath: Int,
+        @Header("X-Student-ID") authenticatedStudentId: Int // Ensure this header is declared
+    ): Response<List<Int>>
 }

@@ -14,6 +14,7 @@ object Constants {
     const val KEY_USER_EMAIL = "user_email"
     const val KEY_USER_NAME = "user_name" // For "Name Surname"
     const val KEY_USER_AVATAR = "user_avatar"
+    const val KEY_USER_ROLE = "user_role"
     const val KEY_IS_LOGGED_IN = "is_logged_in"
     // Add other keys as needed, e.g., for a session token if your server provides one
 

@@ -84,6 +84,15 @@ class AssignmentDetailActivity : AppCompatActivity() {
 
     private fun displayAssignment(assignment: Assignment) {
         binding.textViewAssignmentDetailTopic.text = assignment.topic
+
+        if (!assignment.createdByAdminName.isNullOrEmpty()) {
+            binding.textViewAssignmentDetailAdminName.text = "Created by: ${assignment.createdByAdminName}"
+            binding.textViewAssignmentDetailAdminName.visibility = View.VISIBLE
+        } else {
+            binding.textViewAssignmentDetailAdminName.text = "Created by: Unknown"
+            binding.textViewAssignmentDetailAdminName.visibility = View.VISIBLE // Or GONE
+        }
+
         binding.textViewAssignmentDetailDescription.text = assignment.description
         binding.textViewAssignmentDetailPoints.text = "Points: ${assignment.pointsValue}"
     }

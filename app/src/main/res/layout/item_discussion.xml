@@ -76,12 +76,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
-            android:drawableStart="@android:drawable/ic_menu_save"  android:drawablePadding="4dp" tools:ignore="SmallSp"/>  tools:text="5 Replies"
-        android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
-        android:textColor="?android:attr/textColorSecondary"
-        app:drawableTint="?attr/colorControlNormal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDiscussionDescription" />
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+            android:textColor="?android:attr/textColorSecondary"
+            app:drawableStartCompat="@drawable/ic_chat_bubble_outline"
+            app:drawableTint="?attr/colorControlNormal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDiscussionDescription"
+            tools:text="5 Replies" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

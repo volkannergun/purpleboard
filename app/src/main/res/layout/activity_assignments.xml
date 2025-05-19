@@ -17,6 +17,23 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_assignment" />
 
+    <!-- ADD THIS FLOATING ACTION BUTTON -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddAssignment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:clickable="true"
+        android:contentDescription="Add New Assignment"
+        android:focusable="true"
+        app:backgroundTint="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="@color/white" /> <!-- Initially GONE, will be shown for admins -->
+
+
     <ProgressBar
         android:id="@+id/progressBarAssignments"
         style="?android:attr/progressBarStyle"

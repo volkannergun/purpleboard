@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
+import android.view.View // Make sure this import is present
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -28,20 +28,24 @@ class AssignmentsActivity : AppCompatActivity() {
     private lateinit var prefsHelper: SharedPreferencesHelper
     private var completedAssignmentIds = mutableSetOf<Int>()
 
-    // ActivityResultLauncher for when an assignment is completed
-    private val assignmentDetailResultLauncher =
+    // ActivityResultLauncher for when an assignment is completed OR a new one is added
+    private val assignmentModificationLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                // An assignment was completed, refresh the list to show green background
+                // An assignment was completed OR a new one was created
+                // Refresh the list to show changes (green background or new item)
                 val completedId = result.data?.getIntExtra("COMPLETED_ASSIGNMENT_ID", -1) ?: -1
+                val newAssignmentAdded = result.data?.getBooleanExtra("NEW_ASSIGNMENT_ADDED", false) ?: false
+
                 if (completedId != -1) {
                     completedAssignmentIds.add(completedId)
-                    // Update the specific item or refresh all for simplicity here
-                    fetchAssignments() // Easiest way to reflect changes
                 }
+                // Always refresh if OK, as either completion or addition happened
+                fetchAssignments()
             }
         }
-
+    // Note: We're using one launcher for both detail (completion) and new assignment creation.
+    // If NewAssignmentActivity sets RESULT_OK, this will trigger a refresh.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,16 +58,33 @@ class AssignmentsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setupRecyclerView()
+        setupFab() // Call method to setup FAB
         fetchAssignments() // Initial fetch
     }
 
     override fun onResume() {
         super.onResume()
-        // If coming back from AssignmentDetailActivity after a completion,
-        // fetchAssignments might be called by the resultLauncher.
-        // If not using resultLauncher for some reason, you might refresh here.
+        // If coming back to this screen, it's good practice to refresh data
+        // if there's a chance it might have changed from another part of the app
+        // or if the ActivityResultLauncher isn't solely relied upon.
+        // For this app, fetchAssignments() on launcher result is likely sufficient.
+        // However, if an admin creates an assignment on another device, this wouldn't auto-update
+        // without more advanced real-time updates or pull-to-refresh.
+        // For now, we rely on the result launcher.
     }
 
+    private fun setupFab() {
+        if (prefsHelper.getUserRole() == "admin") {
+            binding.fabAddAssignment.show() // Use the extension function
+            binding.fabAddAssignment.setOnClickListener {
+                val intent = Intent(this, NewAssignmentActivity::class.java)
+                // Use the same launcher, NewAssignmentActivity will set RESULT_OK
+                assignmentModificationLauncher.launch(intent)
+            }
+        } else {
+            binding.fabAddAssignment.hide() // Use the extension function
+        }
+    }
 
     private fun setupRecyclerView() {
         assignmentAdapter = AssignmentAdapter(assignmentList) { assignment ->
@@ -71,7 +92,8 @@ class AssignmentsActivity : AppCompatActivity() {
             intent.putExtra("ASSIGNMENT_ID", assignment.assignmentId)
             intent.putExtra("ASSIGNMENT_TOPIC", assignment.topic)
             intent.putExtra("IS_COMPLETED", assignment.isCompletedByCurrentUser)
-            assignmentDetailResultLauncher.launch(intent)
+            // Use the same launcher for detail activity
+            assignmentModificationLauncher.launch(intent)
         }
         binding.recyclerViewAssignments.apply {
             layoutManager = LinearLayoutManager(this@AssignmentsActivity)
@@ -79,17 +101,15 @@ class AssignmentsActivity : AppCompatActivity() {
         }
     }
 
+    // ... (inside fetchAssignments method)
     private fun fetchAssignments() {
         showLoading(true)
         binding.textViewNoAssignments.hide()
-        val studentId = prefsHelper.getUserId()
+        val currentLoggedInStudentId = prefsHelper.getUserId() // ID of the user currently logged in
 
         lifecycleScope.launch {
-            // Step 1: Fetch all assignments
-            // Step 2: Fetch completed assignment IDs for the current user
-            // Step 3: Merge this information before updating the adapter
             var allAssignments: List<Assignment>? = null
-            var fetchedCompletedIds: List<Int>? = null
+            // completedAssignmentIds is a class member set, will be updated
 
             try {
                 val assignmentsResponse = RetrofitClient.apiService.getAllAssignments()
@@ -100,17 +120,26 @@ class AssignmentsActivity : AppCompatActivity() {
                     Log.e("AssignmentsActivity", "Assignments API Error: ${assignmentsResponse.code()} - ${assignmentsResponse.message()}")
                 }
 
-                if (studentId != -1) {
-                    val completedResponse = RetrofitClient.apiService.getCompletedAssignmentIds(studentId)
-                    if (completedResponse.isSuccessful) {
-                        fetchedCompletedIds = completedResponse.body()
-                        // Update our local set of completed IDs
+                if (currentLoggedInStudentId != -1) {
+                    // Pass currentLoggedInStudentId for both path and header
+                    val completedResponse = RetrofitClient.apiService.getCompletedAssignmentIds(
+                        currentLoggedInStudentId, // studentIdInPath (for the URL)
+                        currentLoggedInStudentId  // authenticatedStudentId (for the X-Student-ID header)
+                    )
+                    if (completedResponse.isSuccessful && completedResponse.body() != null) {
                         completedAssignmentIds.clear()
-                        fetchedCompletedIds?.let { completedAssignmentIds.addAll(it) }
+                        completedAssignmentIds.addAll(completedResponse.body()!!)
+                        Log.d("AssignmentsActivity", "Fetched completed IDs: $completedAssignmentIds") // For debugging
                     } else {
-                        Log.e("AssignmentsActivity", "Completed IDs API Error: ${completedResponse.code()} - ${completedResponse.message()}")
-                        // Continue without completed info if this fails, or show specific error
+                        Log.w("AssignmentsActivity", "Could not fetch completed assignment IDs: ${completedResponse.code()} - ${completedResponse.message()}")
+                        // If this call fails, completedAssignmentIds might be empty or stale,
+                        // leading to assignments appearing uncompleted.
                     }
+                } else {
+                    // Handle case where user ID is not available (e.g., not logged in properly)
+                    // Maybe clear completedAssignmentIds or show an error
+                    completedAssignmentIds.clear()
+                    Log.w("AssignmentsActivity", "User ID not found, cannot fetch completed assignments.")
                 }
 
                 if (allAssignments != null) {
@@ -118,23 +147,18 @@ class AssignmentsActivity : AppCompatActivity() {
                         assignment.copy(isCompletedByCurrentUser = completedAssignmentIds.contains(assignment.assignmentId))
                     }
                     assignmentList.clear()
-                    // Assignments usually aren't sorted by date, but by a specific order if any
-                    assignmentList.addAll(processedAssignments)
+                    assignmentList.addAll(processedAssignments.sortedByDescending { it.createdAt })
                     assignmentAdapter.updateAssignments(assignmentList)
 
-                    if (assignmentList.isEmpty()) {
-                        binding.textViewNoAssignments.show()
-                    } else {
-                        binding.textViewNoAssignments.hide()
-                    }
+                    binding.textViewNoAssignments.visibility = if (assignmentList.isEmpty()) View.VISIBLE else View.GONE
                 } else {
-                    if (assignmentList.isEmpty()) binding.textViewNoAssignments.show()
+                    binding.textViewNoAssignments.visibility = if (assignmentList.isEmpty()) View.VISIBLE else View.GONE
                 }
 
             } catch (e: Exception) {
                 showToast("Error fetching assignment data: ${e.message}")
                 Log.e("AssignmentsActivity", "Exception: ", e)
-                if (assignmentList.isEmpty()) binding.textViewNoAssignments.show()
+                binding.textViewNoAssignments.visibility = if (assignmentList.isEmpty()) View.VISIBLE else View.GONE
             } finally {
                 showLoading(false)
             }
@@ -142,8 +166,14 @@ class AssignmentsActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
+        // Ensure View import is present: import android.view.View
         binding.progressBarAssignments.visibility = if (isLoading) View.VISIBLE else View.GONE
-        binding.recyclerViewAssignments.visibility = if (isLoading) View.GONE else View.VISIBLE
+        // Only hide RecyclerView if loading AND list is currently empty to avoid flicker
+        if (isLoading) {
+            binding.recyclerViewAssignments.visibility = View.GONE
+        } else {
+            binding.recyclerViewAssignments.visibility = View.VISIBLE
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

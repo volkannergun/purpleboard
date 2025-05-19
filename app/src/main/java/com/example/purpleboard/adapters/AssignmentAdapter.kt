@@ -1,6 +1,7 @@
 package com.example.purpleboard.adapters // Adjust package name
 
 import android.view.LayoutInflater
+import android.view.View // Import View for GONE/VISIBLE constants
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +36,8 @@ class AssignmentAdapter(
 
         init {
             binding.root.setOnClickListener {
-                if (position != RecyclerView.NO_POSITION) {
+                val position = bindingAdapterPosition // Use bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) { // Check if position is valid
                     onItemClick(assignments[position])
                 }
             }
@@ -43,26 +45,44 @@ class AssignmentAdapter(
 
         fun bind(assignment: Assignment) {
             binding.textViewAssignmentTopic.text = assignment.topic
+
+            // START: MODIFICATION TO DISPLAY ADMIN NAME
+            if (!assignment.createdByAdminName.isNullOrEmpty()) {
+                binding.textViewAssignmentAdminName.text = "Created by: ${assignment.createdByAdminName}"
+                binding.textViewAssignmentAdminName.visibility = View.VISIBLE
+            } else {
+                // Decide how to handle if admin name is not available
+                // Option 1: Hide the field
+                binding.textViewAssignmentAdminName.visibility = View.GONE
+                // Option 2: Show a default text
+                // binding.textViewAssignmentAdminName.text = "Created by: System"
+                // binding.textViewAssignmentAdminName.visibility = View.VISIBLE
+            }
+            // END: MODIFICATION TO DISPLAY ADMIN NAME
+
             binding.textViewAssignmentDescription.text = assignment.description
             binding.textViewAssignmentPoints.text = "Points: ${assignment.pointsValue}"
 
+            val context = binding.root.context // Get context for fetching colors
+
             if (assignment.isCompletedByCurrentUser) {
                 binding.cardViewAssignmentItem.setCardBackgroundColor(
-                    ContextCompat.getColor(binding.root.context, R.color.app_green_completed)
+                    ContextCompat.getColor(context, R.color.app_green_completed)
                 )
                 // Optionally change text color for better contrast on green
-                binding.textViewAssignmentTopic.setTextColor(ContextCompat.getColor(binding.root.context, R.color.white))
-                binding.textViewAssignmentDescription.setTextColor(ContextCompat.getColor(binding.root.context, R.color.white))
-                binding.textViewAssignmentPoints.setTextColor(ContextCompat.getColor(binding.root.context, R.color.white))
+                binding.textViewAssignmentTopic.setTextColor(ContextCompat.getColor(context, R.color.white))
+                binding.textViewAssignmentAdminName.setTextColor(ContextCompat.getColor(context, R.color.white)) // Also set color for admin name
+                binding.textViewAssignmentDescription.setTextColor(ContextCompat.getColor(context, R.color.white))
+                binding.textViewAssignmentPoints.setTextColor(ContextCompat.getColor(context, R.color.white))
             } else {
                 // Reset to default background/text colors if not completed
-                // The default MaterialCardView background will apply or you can set one explicitly
                 binding.cardViewAssignmentItem.setCardBackgroundColor(
-                    ContextCompat.getColor(binding.root.context, R.color.white) // Or your card's default background
+                    ContextCompat.getColor(context, R.color.white) // Or your card's default background from styles
                 )
-                binding.textViewAssignmentTopic.setTextColor(ContextCompat.getColor(binding.root.context, R.color.app_gray_dark_text)) // Default text color
-                binding.textViewAssignmentDescription.setTextColor(ContextCompat.getColor(binding.root.context, R.color.app_gray_dark_text))
-                binding.textViewAssignmentPoints.setTextColor(ContextCompat.getColor(binding.root.context, R.color.app_purple_primary)) // Default points color
+                binding.textViewAssignmentTopic.setTextColor(ContextCompat.getColor(context, R.color.app_gray_dark_text)) // Default text color
+                binding.textViewAssignmentAdminName.setTextColor(ContextCompat.getColor(context, R.color.app_gray_medium)) // Default color for admin name
+                binding.textViewAssignmentDescription.setTextColor(ContextCompat.getColor(context, R.color.app_gray_dark_text))
+                binding.textViewAssignmentPoints.setTextColor(ContextCompat.getColor(context, R.color.app_purple_primary)) // Default points color
             }
         }
     }

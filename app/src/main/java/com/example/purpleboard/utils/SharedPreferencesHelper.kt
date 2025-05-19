@@ -17,6 +17,7 @@ class SharedPreferencesHelper(context: Context) {
         editor.putString(Constants.KEY_USER_EMAIL, user.email)
         editor.putString(Constants.KEY_USER_NAME, user.fullName) // Save "Name Surname"
         editor.putString(Constants.KEY_USER_AVATAR, user.avatarName)
+        editor.putString(Constants.KEY_USER_ROLE, user.userRole)
         editor.putBoolean(Constants.KEY_IS_LOGGED_IN, true)
         // You could also save the entire User object as JSON if needed,
         // but individual fields are often fine for quick access.
@@ -49,11 +50,16 @@ class SharedPreferencesHelper(context: Context) {
         editor.apply()
     }
 
+    fun getUserRole(): String { // Return non-nullable, default to "student"
+        return sharedPreferences.getString(Constants.KEY_USER_ROLE, "student") ?: "student"
+    }
+
     fun clearSession() {
         editor.remove(Constants.KEY_USER_ID)
         editor.remove(Constants.KEY_USER_EMAIL)
         editor.remove(Constants.KEY_USER_NAME)
         editor.remove(Constants.KEY_USER_AVATAR)
+        editor.remove(Constants.KEY_USER_ROLE)
         editor.remove(Constants.KEY_IS_LOGGED_IN)
         // editor.remove("user_object")
         editor.apply()

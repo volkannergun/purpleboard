@@ -18,6 +18,12 @@ data class Assignment(
     @SerializedName("created_at")
     val createdAt: String, // Or use a Date/Timestamp type
 
+    @SerializedName("created_by_admin_id") // <<< ADD THIS
+    val createdByAdminId: Int?,           // <<< Nullable if admin could be deleted
+
+    @SerializedName("created_by_admin_name") // <<< ADD THIS
+    val createdByAdminName: String?,        // <<< Nullable
+
     // This field is not from the server's main assignment list,
     // but we'll use it in the app to track completion status for the UI.
     // It will be populated client-side.

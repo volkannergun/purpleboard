@@ -93,9 +93,10 @@ class ProfileActivity : AppCompatActivity() {
     private fun setupBadges() {
         // Static list of badges for now
         val badges = listOf(
-            BadgeItem("Pioneer", R.drawable.ic_badge_placeholder_1), // Replace with actual badge drawables
-            BadgeItem("Contributor", R.drawable.ic_badge_placeholder_2),
-            BadgeItem("Top Student", R.drawable.ic_badge_placeholder_3)
+            BadgeItem("Pioneer", R.drawable.badgecreate), // Replace with actual badge drawables
+            BadgeItem("First Point", R.drawable.badgepoint1),
+            BadgeItem("Hat Trick", R.drawable.badgepoint3),
+            BadgeItem("Chief Discussion Officer", R.drawable.badgedisc1),
         )
         badgeAdapter = BadgeAdapter(this, badges)
         binding.recyclerViewBadges.adapter = badgeAdapter
@@ -189,22 +190,40 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun updateUserAvatarOnServer(avatarName: String) {
-        if (currentUserId == -1) return
+        if (currentUserId == -1) {
+            showToast("User not properly identified.")
+            return
+        }
+        // The authenticatedStudentId should be the ID of the currently logged-in user,
+        // which for their own profile, is the same as currentUserId.
+        val authenticatedUserId = prefsHelper.getUserId() // Get the truly logged-in user ID
+        if (authenticatedUserId == -1) {
+            showToast("Critical: Logged-in user ID not found in preferences.")
+            // Potentially log out or handle this critical error
+            return
+        }
+        Log.d("ProfileActivity", "Updating avatar for currentUserId (path): $currentUserId with avatar: $avatarName") // Add Log
 
         binding.progressBarProfile.show()
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.apiService.updateUserAvatar(currentUserId, mapOf("avatar_name" to avatarName))
+                // Pass both currentUserId (for path) and authenticatedUserId (for header)
+                val response = RetrofitClient.apiService.updateUserAvatar(
+                    currentUserId,         // studentIdInPath (for the URL)
+                    authenticatedUserId,   // authenticatedStudentId (for the X-Student-ID header)
+                    mapOf("avatar_name" to avatarName)
+                )
                 if (response.isSuccessful) {
                     showToast("Avatar updated successfully!")
-                    // Update UI immediately and local prefs
                     val avatarResId = resources.getIdentifier(avatarName, "drawable", packageName)
                     if (avatarResId != 0) {
                         Glide.with(this@ProfileActivity).load(avatarResId).circleCrop().into(binding.imageViewProfileAvatar)
                     }
-                    prefsHelper.updateUserAvatar(avatarName) // Update in SharedPreferences
+                    prefsHelper.updateUserAvatar(avatarName)
                 } else {
-                    showToast("Failed to update avatar: ${response.errorBody()?.string() ?: response.message()}")
+                    val errorMsg = response.errorBody()?.string() ?: response.message() ?: "Unknown error"
+                    showToast("Failed to update avatar: $errorMsg")
+                    Log.e("ProfileActivity", "Update Avatar API Error ${response.code()}: $errorMsg")
                 }
             } catch (e: Exception) {
                 showToast("Error updating avatar: ${e.message}")

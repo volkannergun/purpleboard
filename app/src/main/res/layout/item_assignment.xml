@@ -28,6 +28,15 @@
             tools:text="Assignment Topic Title" />
 
         <TextView
+            android:id="@+id/textViewAssignmentAdminName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="?android:attr/textColorSecondary"
+            tools:text="Created by: Admin Name" />
+
+        <TextView
             android:id="@+id/textViewAssignmentDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
